@@ -101,7 +101,7 @@
     -->
   <dataDir>${solr.data.dir:}</dataDir>
 
-
+  
   <!-- The DirectoryFactory to use for indexes.
        
        solr.StandardDirectoryFactory is filesystem
@@ -823,7 +823,13 @@
        If a Request Handler is declared with startup="lazy", then it will
        not be initialized until the first request that uses it.
 
-    -->
+    -->\
+    <!-- Added this entry to solrconfig.xml -->
+    <requestHandler name="/dataimport" class="solr.DataImportHandler">
+	  	<lst name="defaults">
+	    	<str name="config">data-config.xml</str>
+	  	</lst>
+  	</requestHandler>
   <!-- SearchHandler
 
        http://wiki.apache.org/solr/SearchHandler
