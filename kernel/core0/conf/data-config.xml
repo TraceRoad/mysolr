@@ -1,1 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<dataConfig>
+ <dataSource name="SiemensWise" driver="com.microsoft.sqlserver.jdbc.SQLServerDriver" url="jdbc:sqlserver://122.115.33.202;databaseName=ad_wise8" user="adwise8" password="lP09okJi8"/>
+  <document name="siemens"
+			>
+         <entity name="aggregationPage"
+         dataSource="SiemensWise"
+         pk="id"
+         transformer="HTMLStripTransformer,com.intumit.solr.SplitTransformer"
+         query="SELECT 'aggregationPage_'+CONVERT(varchar,id) as id,keyword,sort,url,saveTime,target,description,'aggregationPage' as site from RecommendKeyword"
+         deltaQuery="SELECT id from RecommendKeyword where saveTime > '${dih.last_index_time}'"
+         deletedPkQuery="SELECT id from RecommendKeyword  where id = -1"
+         deltaImportQuery="SELECT 'aggregationPage_'+CONVERT(varchar,id) as id,keyword,sort,url,saveTime,target,description from RecommendKeyword where saveTime > '${dih.last_index_time}'" 
+         batchSize="10000">
+         <field column="id" name="id"/>
+         <field column="keyword" name="keyword_s" splitBy=","/>
+         <field column="sort" name="sort_s"/>
+         <field column="url" name="url_s"/>
+         <field column="saveTime" name="saveTime_dt"/>
+         <field column="target" name="target_s"/>
+         <field column="description" name="description_t"/>
+         <field column="site" name="site_s"/>
+         </entity>
+  </document>
+</dataConfig>
